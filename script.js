@@ -24,8 +24,39 @@ const schoolData = {
 // 2. تتبع الحالة الحالية للتطبيق (Application State)
 let currentTab = 'attendance';
 
-// 3. مستمع الأحداث عند تحميل الصفحة بالكامل
+// 3. تهيئة الخريطة عند تحميل الصفحة
+let mapInitialized = false;
+function initWorldMap() {
+    if (mapInitialized) return;
+    const map = L.map('world-map').setView([20, 0], 2);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB'
+    }).addTo(map);
+
+    const markers = [
+        { lat: 39.9042, lng: 116.4074, label: 'BNU – بكين (WDEA)' },
+        { lat: 48.8566, lng: 2.3522, label: 'UNESCO – باريس' },
+        { lat: 40.7128, lng: -74.0060, label: 'NY – مركز أبحاث AIED' },
+        { lat: 25.2048, lng: 55.2708, label: 'دبي – منصة Huawei الذكية' },
+        { lat: 36.7538, lng: 3.0588, label: '★ الجزائر – مركزك المحلي' }
+    ];
+    markers.forEach(m => {
+        const color = m.label.includes('الجزائر') ? 'red' : 'purple';
+        const icon = L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="background-color:${color}; width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
+            iconSize: [12, 12],
+            iconAnchor: [6, 6]
+        });
+        L.marker([m.lat, m.lng], { icon }).addTo(map)
+            .bindPopup(`<b>${m.label}</b>`);
+    });
+    mapInitialized = true;
+}
+
+// 4. مستمع الأحداث عند تحميل الصفحة بالكامل
 document.addEventListener("DOMContentLoaded", () => {
+    initWorldMap();
     switchTab(currentTab);
     const roleSelector = document.getElementById('user-role');
     if(roleSelector) {
@@ -36,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// 4. دالة التنقل الديناميكي بين الأقسام (Tab Switcher)
+// 5. دالة التنقل الديناميكي بين الأقسام (Tab Switcher)
 function switchTab(tabId) {
     currentTab = tabId;
     const contentDisplay = document.getElementById('main-content-display');
@@ -55,7 +86,7 @@ function switchTab(tabId) {
     contentDisplay.innerHTML = generateTabContent(tabId);
 }
 
-// 5. مولد واجهات الاستخدام للأقسام (UI Engine)
+// 6. مولد واجهات الاستخدام للأقسام (UI Engine)
 function generateTabContent(tabId) {
     switch(tabId) {
         case 'attendance':
@@ -249,7 +280,7 @@ function generateTabContent(tabId) {
     }
 }
 
-// 6. دوال المحاكاة التجريبية للتفاعلات (Simulation Handlers)
+// 7. دوال المحاكاة التجريبية للتفاعلات (Simulation Handlers)
 function simulateAction(actionName) {
     alert(`⚡ [محاكاة تشغيلية]: تم تشغيل وظيفة (${actionName}) بنجاح.\n\nسيتم ربطها في الخطوة القادمة بـقاعدة البيانات الفعلية أو الخادم الخاص بك.`);
 }
