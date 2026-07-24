@@ -1,0 +1,85 @@
+/*
+ * منصة المدرسة الرقمية الذكية - ملف اللمسات البصرية والتأثيرات (style.css)
+ * يمنح التطبيق طابعًا احترافيًا وسلاسة في الانتقال بين الأقسام
+ */
+
+/* 1. إعدادات الخط العربي العام وتحسين القراءة */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+body {
+    font-family: 'Cairo', sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 2. تأثير حركة سلس عند تنشيط أو تغيير الأقسام (Fade-in Animation) */
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#main-content-display {
+    animation: fadeInContent 0.4s ease-out forwards;
+}
+
+/* 3. تخصيص مظهر شريط التمرير (Scrollbar) ليكون متناسقًا مع ألوان المنصة */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9; /* gray-100 */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c7d2fe; /* indigo-200 */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4f46e5; /* indigo-600 */
+}
+
+/* 4. لمسة جمالية متوهجة خاصة بقسم مستشار الذكاء الاصطناعي المستقبلي */
+.bg-purple-50 {
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-purple-50::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(168, 85, 247, 0.03), transparent);
+    transform: rotate(45deg);
+    animation: aiGlow 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes aiGlow {
+    0% {
+        transform: translate(-30%, -30%) rotate(45deg);
+    }
+    100% {
+        transform: translate(30%, 30%) rotate(45deg);
+    }
+}
+
+/* 5. تأثيرات حركية خفيفة على الأزرار عند تمرير الفأرة (Hover States) */
+button, select {
+    transition: all 0.2s ease-in-out !important;
+}
+
+button:active {
+    transform: scale(0.98);
+}
